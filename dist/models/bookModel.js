@@ -32,6 +32,7 @@ const bookSchema = new mongoose_1.Schema({
     genre: { type: String, required: true },
     bookId: { type: String, required: true },
     publisher: { type: String, required: true },
+    authorId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 const BookModel = mongoose_1.default.model("Book", bookSchema);
 exports.default = BookModel;

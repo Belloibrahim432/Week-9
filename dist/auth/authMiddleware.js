@@ -1,21 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const secretKey = 'your-secret-key';
+const utils_1 = require("../utils");
 const authenticateToken = (req, res, next) => {
-    const token = req.header('Authorization');
-    if (!token) {
-        return res.status(401).json({ message: 'Access denied' });
+    const authorised = (0, utils_1.verifyToken)(req);
+    if (!authorised) {
+        return res.status(403).json({ error: 'Unauthorised' });
     }
-    jsonwebtoken_1.default.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Invalid token' });
-        }
-        req.user = decoded; // Store user information in the request object
-        next();
-    });
+    next();
 };
 exports.default = authenticateToken;
